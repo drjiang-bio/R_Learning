@@ -4,5 +4,5 @@
 .Ruserdata
 
 # My configurations:
-.Rdata
+*.Rdata
 
