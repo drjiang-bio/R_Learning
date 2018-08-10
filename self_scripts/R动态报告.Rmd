@@ -1,0 +1,39 @@
+---
+title: "R动态报告"
+output: html_document
+---
+
+# Regression Report
+```{r echo=F, results=F}
+n <- nrow(women)
+fit <- lm(weight ~ height, data = women)
+sfit <- summary(fit)
+b <- coefficients(fit)
+```
+
+Linear regression was uesed to model the relationship between weights and 
+height in a sample of `r n` women. The equation 
+  **weight = `r b[[1]]` + `r b[[2]]` * height**
+accounted of `r round(sfit$r.squared, 2)`% of the variance in weihts.
+The ANOVA table is given below.
+
+```{r echo=F, results='asis'}
+library(xtable)
+options(xtable.comment=F)
+print(xtable(sfit), type='html', html.table.attributes='border=0')
+library(knitr)
+# print(kable(sfit$coefficients))
+# print(xtable(sfit), type='latex')
+```
+
+The regression is plotted in the following figure.
+
+```{r echo=F, fig.width=5, fig.height=4}
+library(ggplot2)
+ggplot(data = women, aes(x=height, y=weight)) +
+  geom_point() + geom_smooth(method = 'lm') +
+  theme_bw() + 
+  theme(panel.grid.minor = element_blank()) +
+  theme(panel.border = element_blank(),
+        axis.line = element_line(colour = 'black'))
+```
